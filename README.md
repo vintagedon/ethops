@@ -4,13 +4,14 @@ title: "Ethops"
 description: "ITIL-driven autonomous DevOps team framework for scientific computing infrastructure"
 author: "VintageDon"
 date: "2026-03-21"
-version: "0.2"
+version: "0.3"
 status: "Pre-Implementation"
 tags:
   - type: project-root
   - domain: [autonomous-ops, itil, scientific-computing]
   - tech: [python, itop, postgresql, ollama, proxmox]
 related_documents:
+  - "[Project Charter](CHARTER.md)"
   - "[Proxmox Astronomy Lab](https://github.com/vintagedon/proxmox-astronomy-lab)"
   - "[Astronomy RAG Corpus](https://github.com/vintagedon/astronomy-rag-corpus)"
 ---
@@ -26,7 +27,9 @@ related_documents:
 
 > Ephemeral LLM agents coordinated through tickets, not conversations.
 
-Ethops (ephemeral ops) implements an autonomous DevOps team whose members happen to be LLM agents, organized through standard ITIL processes on the [Proxmox Astronomy Lab](https://github.com/radioastronomyio/proxmox-astronomy-lab) research cluster. Two teams, IT Ops and Research/Dev, share an iTop ITSM instance as their work surface, handling both autonomous cluster operations and service requests from the Astronomy Team. A persistent orchestrator dispatches work; the Astronomy Team serves as Change Advisory Board.
+Ethops (ephemeral ops) implements an autonomous DevOps team whose members happen to be LLM agents, organized through standard ITIL processes on the [Proxmox Astronomy Lab](https://github.com/radioastronomyio/proxmox-astronomy-lab) research cluster. Two teams, IT Ops and Research/Dev, share an iTop ITSM instance as their work surface, handling both autonomous cluster operations and service requests from the Astronomy Team. A persistent orchestrator dispatches work. The Change Advisory Board is the human operator and two AI peers, with approval held by the operator.
+
+The refined direction as of September 2026 is recorded in the [Project Charter](CHARTER.md). Where this README and the charter disagree, the charter governs.
 
 ---
 
@@ -80,7 +83,7 @@ Agents don't have unlimited authority. Every persona operates under least-privil
 
 ![alt text](assets/escalation-section-infographic.jpg)
 
-When an agent's confidence drops below threshold, or the action requires authority beyond its role, it escalates to the human operator. The operator serves as Change Advisory Board for normal and emergency changes. Standard changes (well-understood, pre-approved, low-risk) execute automatically after passing the mechanical validation pipeline. The system is designed to handle routine operations autonomously while routing anything novel, risky, or ambiguous to a human.
+When an agent's confidence drops below threshold, or the action requires authority beyond its role, it escalates to the human operator. The Change Advisory Board (the operator and two AI peers, with approval held by the operator) reviews normal and emergency changes. Standard changes (well-understood, pre-approved, low-risk) execute automatically after passing the mechanical validation pipeline. The system is designed to handle routine operations autonomously while routing anything novel, risky, or ambiguous to a human.
 
 ---
 
@@ -88,12 +91,12 @@ When an agent's confidence drops below threshold, or the action requires authori
 
 | Area | Status | Description |
 |------|--------|-------------|
-| Architecture | ✅ Validated | Multiple research iterations and design sessions |
+| Architecture | 🔄 Revised | Refined direction recorded in the [Project Charter](CHARTER.md) (draft) |
 | Documentation | ✅ Complete | Repository scaffolding, standards, templates |
-| iTop Deployment | ✅ Complete | VM provisioning and initial CMDB population |
-| Orchestrator | ✅ Complete | SDM skeleton on bare-metal node |
-| IT Ops Agents | ✅ Complete | Daily review agent, alert-driven incident response |
-| Research Agents | ⬜ In Progress | Scientific workflow execution |
+| iTop Deployment | ⬜ Planned | Charter milestone M1 |
+| Orchestrator | ⬜ Planned | The spec lifecycle and its dispatcher, with iTop above them |
+| IT Ops Agents | ⬜ Planned | Overnight Sysop first (charter milestone M3) |
+| Research Agents | ⬜ Planned | After the first IT Ops employee |
 
 ---
 
@@ -162,6 +165,7 @@ ethops/
 │   ├── documentation-standards/  # Template library and guidelines
 │   └── data-science-infrastructure.md
 ├── AGENTS.md                     # Agent conventions and constraints
+├── CHARTER.md                    # Project charter (current direction)
 ├── CODE_OF_CONDUCT.md
 ├── CONTRIBUTING.md
 ├── LICENSE                       # MIT (code)
@@ -216,6 +220,7 @@ Three active DESI research projects drive the cluster's computational workload. 
 
 ## Acknowledgments
 
-- [iTop by Combodo](https://www.itophub.io/) — Open-source ITSM that makes the architecture possible
-- [Steven Vik](https://dev.to/svik) — Autonomous AI agents on Proxmox, prior art
-- [Nathan Broadbent](https://github.com/ndbroadbent) — Self-healing infrastructure with OpenClaw
+- [iTop by Combodo](https://www.itophub.io/): Open-source ITSM that makes the architecture possible
+- [Steven Vik](https://dev.to/svik): Autonomous AI agents on Proxmox, prior art
+- [Nathan Broadbent](https://github.com/ndbroadbent): Self-healing infrastructure with OpenClaw
+- [Paperclip](https://github.com/paperclipai/paperclip): Open-source orchestration that runs agents as a company; the closest current relative
