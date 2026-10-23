@@ -64,21 +64,15 @@ EthOps grew out of the [Proxmox Astronomy Lab](https://github.com/radioastronomy
 ```mermaid
 flowchart LR
     accTitle: How work moves through EthOps
-    accDescr: A consumer need is scoped into a spec and approved by the human operator. A fresh agent executes it using Astro capabilities and the Forge environment. The result is checked and independently reviewed, then accepted by the human operator and delivered. Each step is kept in durable records.
-    need(["Consumer need"]) --> scope
-    subgraph flow["EthOps work lifecycle"]
-        scope["Scope<br/>write the spec"] --> approve{"Approve<br/>human operator"}
-        approve --> run["Execute<br/>fresh agent"]
-        run --> review["Check and review<br/>tests, then independent review"]
-        review --> accept{"Accept<br/>human operator"}
-    end
-    accept --> result(["Delivered result"])
-    subgraph env["What agents work with"]
-        astro["Astro<br/>skills and capabilities"]
-        forge["The Forge<br/>runtimes, tools, and data"]
-    end
-    env --> run
-    review -.-> records[("Durable records<br/>every step kept")]
+    accDescr: A consumer need becomes a spec. The human operator approves it, a fresh agent executes it using Astro capabilities on the Forge, checks and an independent review follow, and the human operator accepts the result. Each step is kept in durable records.
+    need(["Consumer<br/>need"]) --> spec["Spec"]
+    spec --> approve{{"Human<br/>approves"}}
+    approve --> run["Agent<br/>executes"]
+    run --> review["Checks and<br/>review"]
+    review --> accept{{"Human<br/>accepts"}}
+    accept --> result(["Result"])
+    tools["Astro on<br/>the Forge"] --> run
+    review -.-> records[("Records")]
 ```
 
 - **Consumers** bring needs: a research project needs prepared data, a service needs a fix, an agent needs a better skill.
