@@ -27,7 +27,7 @@ related_documents:
     <img src="https://img.shields.io/badge/Status-Draft_v0.4-4a5aa0" alt="Status: Draft v0.4">
     <img src="https://img.shields.io/badge/Framework-ITIL-4a5aa0" alt="Framework: ITIL">
     <img src="https://img.shields.io/badge/Coordination-Manual_first-4a5aa0" alt="Coordination: manual first">
-    <a href="LICENSE"><img src="https://img.shields.io/badge/Code-MIT-yellow" alt="Code license: MIT"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/Code-GPL--3.0-blue" alt="Code license: GPL-3.0"></a>
     <a href="LICENSE-DATA"><img src="https://img.shields.io/badge/Content-CC--BY--4.0-lightgrey" alt="Content license: CC-BY-4.0"></a>
   </p>
 
@@ -198,7 +198,7 @@ ethops/
 ├── assets/           # Logo and historical diagrams
 ├── shared/           # Repository utilities
 ├── work-logs/        # Retained project history
-├── LICENSE           # Code license (MIT)
+├── LICENSE           # Code license (GPL-3.0)
 └── LICENSE-DATA      # Data and content license (CC-BY-4.0)
 ```
 
@@ -218,7 +218,7 @@ For this project, the next step is the log digest probe. Its evidence decides th
 
 ## 📄 License
 
-- **Code**: [MIT License](LICENSE)
+- **Code**: [GNU General Public License v3.0](LICENSE)
 - **Data/Content**: [CC-BY-4.0](LICENSE-DATA)
 
 ---
