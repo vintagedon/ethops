@@ -1,221 +1,234 @@
 <!--
 ---
-title: "Ethops"
-description: "ITIL-driven autonomous DevOps team framework for scientific computing infrastructure"
-author: "VintageDon"
-date: "2026-03-21"
-version: "0.2"
-status: "Pre-Implementation"
+title: "EthOps"
+description: "A service operating model for human-AI collaboration, consumer value, and scaffolding through real work"
+author: "VintageDon (https://github.com/vintagedon/)"
+date: "2026-10-23"
+version: "0.4"
+status: "Draft"
 tags:
   - type: project-root
-  - domain: [autonomous-ops, itil, scientific-computing]
-  - tech: [python, itop, postgresql, ollama, proxmox]
+  - domain: [autonomous-ops, itil]
 related_documents:
-  - "[Proxmox Astronomy Lab](https://github.com/vintagedon/proxmox-astronomy-lab)"
-  - "[Astronomy RAG Corpus](https://github.com/vintagedon/astronomy-rag-corpus)"
+  - "[Project Charter](CHARTER.md)"
+  - "[Proxmox Astronomy Lab](https://github.com/radioastronomyio/proxmox-astronomy-lab)"
+  - "[Steam Dataset 2025](https://github.com/vintagedon/steam-dataset-2025)"
+  - "[Analysis-Ready Datasets](https://github.com/vintagedon/analysis-ready-datasets)"
 ---
 -->
 
-# Ethops
+<div align="center">
+  <img src="assets/logo.svg" width="96" height="96" alt="EthOps logo" />
+  <h1>EthOps</h1>
+  <p><strong>A service operating model for human-AI collaboration.</strong></p>
+  <p>Deliver useful work. Learn from it. Leave the next person or agent better equipped.</p>
 
-![Repository Banner](assets/repo-banner.jpg)
+  <p>
+    <img src="https://img.shields.io/badge/Status-Draft_v0.4-4a5aa0" alt="Status: Draft v0.4">
+    <img src="https://img.shields.io/badge/Framework-ITIL-4a5aa0" alt="Framework: ITIL">
+    <img src="https://img.shields.io/badge/Coordination-Manual_first-4a5aa0" alt="Coordination: manual first">
+    <a href="LICENSE"><img src="https://img.shields.io/badge/Code-MIT-yellow" alt="Code license: MIT"></a>
+    <a href="LICENSE-DATA"><img src="https://img.shields.io/badge/Content-CC--BY--4.0-lightgrey" alt="Content license: CC-BY-4.0"></a>
+  </p>
 
-[![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python)](https://python.org)
-[![iTop](https://img.shields.io/badge/ITSM-iTop-0078D4)](https://www.itophub.io/)
-[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
-
-> Ephemeral LLM agents coordinated through tickets, not conversations.
-
-Ethops (ephemeral ops) implements an autonomous DevOps team whose members happen to be LLM agents, organized through standard ITIL processes on the [Proxmox Astronomy Lab](https://github.com/radioastronomyio/proxmox-astronomy-lab) research cluster. Two teams, IT Ops and Research/Dev, share an iTop ITSM instance as their work surface, handling both autonomous cluster operations and service requests from the Astronomy Team. A persistent orchestrator dispatches work; the Astronomy Team serves as Change Advisory Board.
-
----
-
-## Overview
-
-Most multi-agent AI systems coordinate agents through conversation graphs, routing prompts between specialized nodes. This is effective for text generation workflows but doesn't produce the artifacts infrastructure operations require: audit trails, SLA metrics, change records, compliance evidence.
-
-Ethops organizes agents the way a professional IT team is organized. The vocabulary is standard ITIL: incidents, problems, changes, service requests. Each agent maps to a real IT role (NOC Analyst, Incident Responder, Change Implementer, Compliance Auditor) with a job description, least-privilege access, and a tamper-evident action log. Agents spin up for a task, work a ticket, and terminate. No persistent daemons. No agent-to-agent communication. Everything flows through the ticket system.
-
-The result is an autonomous operations system that produces the same artifacts a human team would: ticket histories with SLA tracking, change records with mechanical and semantic validation, daily health reports, compliance evidence, and structured documentation submitted as pull requests for human review, with every action recorded in a tamper-evident log. All of it running on a single GPU and open-source tooling.
-
----
-
-## How the Team Works
-
-### Everyone Uses the Ticket System
-
-The ticket system is the universal work surface. Agents use it. The human operator uses it. There is no separate "agent interface" and "human interface." When the NOC Analyst detects a disk trending toward capacity, it files an incident ticket. When the researcher needs a DESI spectroscopic analysis run, they file a service request. Both enter the same queue, get the same SLA tracking, produce the same audit trail.
-
-![alt text](assets/ticket-system-section-infographic.jpg)
-
-This is the part most multi-agent frameworks miss. They position the human as an overseer monitoring autonomous processes. In ethops, the human is a first-class customer of the agent team. Need research done on a new dataset? File a ticket. The Research Analyst agent picks it up, proposes a research plan, and works through it with you before executing. The deliverable comes back as a ticket update with a structured report.
-
-Need GPU time for a training run? File a ticket. The orchestrator checks the queue, and if your job conflicts with scheduled ops work, the agent comes back with a proposed schedule: "Priority 1 ops window runs 02:00-04:00 UTC, your job can start at 04:15, or I can move it to the weekend maintenance window."
-
-Need an ML pipeline adjusted because the redshift calibration is drifting? You guessed it: file a ticket. An agent pulls the script from Github, diagnoses the issue, proposes a fix, and submits a PR for your review, complete with code review.
-
-The human operator isn't just approving agent-initiated changes. They're submitting work, receiving proposals, negotiating priorities, and reviewing deliverables through the same structured workflow the agents use among themselves. The back-and-forth happens in ticket worklogs, not chat windows. Every exchange is auditable, timestamped, and tied to a service level agreement.
-
-### The Autonomous Operations Rhythm
-
-The other side of the ticket system runs without human input. The IT Ops team operates on a rhythm familiar to any NOC. Several times per day, the NOC Analyst agent wakes, pulls 24 hours of telemetry deltas, log summaries, metric trends, and ticket history across the entire cluster. A single batched LLM assessment covers all nodes. If something looks wrong, it files an incident ticket. If everything is clean, it writes a health report to the knowledge base. Then it terminates.
-
-When Alertmanager fires between daily reviews, the SDM orchestrator catches the webhook and dispatches a fresh triage instance. If remediation is needed, the Incident Responder picks up the ticket, works it through diagnosis, and either executes a pre-approved playbook or escalates to the human operator for approval. Each agent in the chain reads the ticket, does its job, writes its findings, and dies. The ticket is the coordination surface. Agents never talk to each other.
-
-### GPU Scheduling on Constrained Hardware
-
-The entire system shares a single NVIDIA A4000 (16GB VRAM) for all LLM inference. This is deliberate. On constrained hardware, the GPU queue is the hard problem, not the inference itself.
-
-Three priority tiers govern access: IT Ops, our RAG embedding and any astronomy MLOps, and finally the research tier.
-
-![alt text](assets/gpu-scheduling-section-infographic.jpg)
-
-IT Ops preempts everything else. When an alert fires at 3 AM, the triage agent doesn't wait behind a research job. The priority proxy handles this seamlessly, and provide request prioritization natively.
-
-The subtler problem is model hot-swapping. Loading a reasoning model consumes most of the 16GB VRAM. Unloading it to run an embedding model, then reloading it for the next reasoning request, burns GPU cycles on weight transfers instead of inference. The queue groups requests by model to minimize swap frequency: batch the embedding work together, batch the reasoning work together, avoid thrashing between them. On a single GPU, this scheduling discipline is the difference between a system that works and one that spends half its time loading weights.
-
-### The Escalation Model
-
-Agents don't have unlimited authority. Every persona operates under least-privilege constraints defined by its role. The NOC Analyst can create incident tickets but can't execute playbooks. The Incident Responder can run pre-approved remediations but can't approve changes. The Change Implementer can execute approved changes but can't self-approve them. This mirrors how a real IT team operates: the person who diagnoses the problem is not the person who approves the fix.
-
-![alt text](assets/escalation-section-infographic.jpg)
-
-When an agent's confidence drops below threshold, or the action requires authority beyond its role, it escalates to the human operator. The operator serves as Change Advisory Board for normal and emergency changes. Standard changes (well-understood, pre-approved, low-risk) execute automatically after passing the mechanical validation pipeline. The system is designed to handle routine operations autonomously while routing anything novel, risky, or ambiguous to a human.
+  <p>
+    <a href="#-why-this-exists">Why</a> ·
+    <a href="#-value-to-consumers">Value</a> ·
+    <a href="#-the-system-in-action-steam-to-ard">Steam to ARD</a> ·
+    <a href="#-scaffolding-through-real-work">Scaffolding</a> ·
+    <a href="#-first-pilot-daily-log-digest">Pilot</a> ·
+    <a href="#-architecture">Architecture</a> ·
+    <a href="#-project-status">Status</a> ·
+    <a href="CHARTER.md">Charter</a>
+  </p>
+</div>
 
 ---
 
-## Project Status
+## ❓ Why This Exists
 
-| Area | Status | Description |
-|------|--------|-------------|
-| Architecture | ✅ Validated | Multiple research iterations and design sessions |
-| Documentation | ✅ Complete | Repository scaffolding, standards, templates |
-| iTop Deployment | ✅ Complete | VM provisioning and initial CMDB population |
-| Orchestrator | ✅ Complete | SDM skeleton on bare-metal node |
-| IT Ops Agents | ✅ Complete | Daily review agent, alert-driven incident response |
-| Research Agents | ⬜ In Progress | Scientific workflow execution |
+AI work tends to live in conversations. A conversation is a good place to think and a poor place to keep what was asked, who approved it, what ran, and whether the result was accepted. When the session ends or the tool changes, that history goes with it.
+
+EthOps treats human-AI collaboration as service delivery. A consumer brings a need, and the work is scoped, authorized, executed, checked, reviewed, and accepted on durable records that a fresh person or agent can pick up. What the work teaches is kept and reused, so the next piece starts further along. **EthOps defines how we work; Astro supplies the capabilities we work with.**
+
+If you come from IT service management, the parts will be familiar: defined roles, shared work records, bounded authority, change review, and continual improvement. EthOps applies them to teams in which some participants are AI. It runs on manual coordination today. A service desk such as iTop is the intended home for richer records, and the model does not depend on it.
 
 ---
 
-## Architecture
+## 🧭 Overview
 
-Ethops operates on the [Proxmox Astronomy Cluster](https://github.com/radioastronomyio/proxmox-astronomy-lab), a 7-node Proxmox research cluster dedicated to astronomical survey data processing. A bare-metal orchestrator node (AMD 5950X, 128GB, dual A4000 16GB nVidia GPUs) hosts agent processes and local LLM inference. All stateful services are distributed across cluster VMs over a dual 10G backbone.
+This work grew out of the [Proxmox Astronomy Lab](https://github.com/radioastronomyio/proxmox-astronomy-lab), whose retained repository history begins in November 2023. The environment started with mini PCs and an old NAS, expanded, and changed as its workloads changed. Research, data engineering, software development, and creative projects supplied the reasons to build it.
 
-### Key Components
+The same perspective applies to AI. Compute, subscriptions, tools, and human attention are resources that consumers use to accomplish something. A research result, a reliable service, a game enjoyed by its creator, or a dataset useful to someone else can each justify the work. Value includes enjoyment, learning, and creative progress alongside measurable technical or financial outcomes.
 
-| Component | Role |
-|-----------|------|
-| iTop | ITSM backbone: tickets, CMDB, change management, SLA tracking, dispatch rules |
-| SDM Orchestrator | Persistent service on the orchestrator node. Watches the ticket queue, manages GPU priority, ensures SLA compliance. Not an LLM, a dispatcher. |
-| Ephemeral Agents | LLM agents instantiated for a single task. Work one ticket, update it, terminate. State lives in the ticket and action log, never in the agent. |
-| PostgreSQL | Agent state and task queue (SKIP LOCKED), deep telemetry, pgvector for RAG semantic layer |
-| Neo4j | Infrastructure topology graph: agents traverse relationships instead of inferring them, reducing hallucination surface in RCA and impact assessment where the graph is current |
-| RabbitMQ | Real-time VM telemetry from observers, dead letter escalation |
-| Ollama | Local inference on A4000 with priority queue proxy. IT Ops (highest) → RAG embedding (medium) → Research (lowest). |
+The engineering process has demonstrated a useful foundation: a fresh agent can receive a scoped specification and selected context, execute a coding task, run checks, commit the result, submit a pull request, and take it through triad review. Corrections and amendments are part of that process. This gives us something concrete to build on: a way to carry intent through execution and review, then use what happened to improve the next assignment.
 
-### Interface Abstraction
+EthOps organizes that practice as service delivery. ITIL provides a framework for requests, incidents, problems, changes, knowledge, and continual improvement. The triad of **Don, Claude, and GPT** acts as the Change Advisory Board (CAB). Claude and GPT rotate through builder and reviewer seats; Don holds approval, priority, and merge authority.
 
-Every input to the system sits behind an abstract interface contract. Seven contracts are defined: ticket system, monitoring, telemetry, CMDB, knowledge base, GRC/compliance, and inference. An eighth (infrastructure knowledge graph) adds topology traversal. The orchestrator and agents consume protocols, never vendor APIs directly.
+---
 
-This means the architecture is portable. The reference implementation uses iTop, Prometheus, OSQuery, and Ollama. An alternative deployment could use ServiceNow, Datadog, CrowdStrike, and Azure OpenAI: same orchestration logic, different adapters.
+## 💡 Value to Consumers
 
-### Change Enablement Pipeline
+The environment serves several consumers, often in overlapping roles: Don, the astronomy, engineering, and hobby projects that run on it, the agents and AI peers doing the work, and outside researchers and builders who reuse what it publishes. An agent consumes knowledge and execution services while producing a result for another consumer. The astronomy workload consumes infrastructure just as a game project does.
 
-Mechanical validation runs before any LLM touches a change:
+Those relationships make shared-resource decisions concrete: what outcome is being supported, for whom, at what cost, and with what effect on everyone else? Successful execution is one input to that judgment; whether the work was worth doing is another. The [charter](CHARTER.md#4-value-and-consumers) sets out what each consumer should get from the service.
 
-```
-yamllint → ansible-lint → OPA/Rego conftest → LLM semantic review → CAB approval
+---
+
+## 🎮 The System in Action: Steam to ARD
+
+[Steam Dataset 2025](https://github.com/vintagedon/steam-dataset-2025) is an early example of this practice. The project assembled a substantial Steam catalog and review dataset, with preparation code, documentation, and analytical examples. Its [archived release](https://doi.org/10.5281/zenodo.17266923) gives others a citable starting point for their own work.
+
+The result continued to attract use after the initial project. Shared dashboard snapshots show about **9.4K Kaggle downloads** and **1.4K Zenodo downloads**. These are platform download counts, not distinct people.
+
+There is also a specific downstream use. TU Dortmund's [Digital Humanities event announcement](https://kuwi.tu-dortmund.de/details/event-digitale-geisteswissenschaften-67201/) names Steam Dataset 2025 as the basis for its **November 10, 2026** meeting, combining exploratory text and data mining with game studies and interdisciplinary research questions. That is evidence of selection for an upcoming educational event; its outcomes remain to be observed.
+
+Steam also changed the work that followed. It was a **proto-ARD**: experience from the project helped form the [Analysis-Ready Datasets framework](https://github.com/vintagedon/analysis-ready-datasets) that continues to shape this work. The method begins with what researchers repeatedly need, then prepares reusable analytical capabilities. Depending on the domain, those can include derived scalar measurements, embeddings, or graph relationships. Expensive preparation performed once can spare later consumers from repeating it.
+
+The value therefore carries forward in several forms. People can use the Steam dataset. Subsequent projects can use the lessons learned while building it. Other dataset builders can use the ARD methodology to prepare resources for their own communities. The framework is still developing, and external adoption of the methodology is a separate question from downloads of the Steam release.
+
+That is the mechanism EthOps seeks to support: worthwhile work produces a result, experience produces reusable support, and that support helps the next consumer start further along. Steam predates the integrated EthOps system envisioned here. It is evidence of the practice from which the operating model is being formed.
+
+---
+
+## 🔁 Scaffolding Through Real Work
+
+**Praxatic scaffolding** is our working term for building better conditions for future work by doing and examining useful work now.
+
+```mermaid
+flowchart TB
+    accTitle: Consumer value and learning cycle
+    accDescr: Authorized work is verified and reviewed before accepted delivery. Findings and consumer feedback improve the support used for later work.
+    need["Consumer need"] --> work["Scope, authorize, and execute"]
+    work --> review["Verify and review"]
+    review -->|Accepted| delivery["Deliver a useful outcome"]
+    delivery --> feedback["Consumer use and feedback"]
+    feedback -->|Next need| need
+    review -->|Findings and corrections| learning["Learn from the work"]
+    feedback --> learning
+    learning --> support["Retain, improve, or retire support"]
+    support -->|Equip the next task| work
 ```
 
-Standard changes auto-execute after passing the mechanical floor. Normal changes queue for human approval. The LLM's only job: "does this change make sense given the current cluster state?" A question it's good at, applied after deterministic tools have already caught structural errors.
+*Proposed value cycle: delivery serves the consumer; findings and use improve the conditions for later work.*
 
-### Compliance and Governance
+A difficult assignment might reveal a missing skill. A failed check might expose an unsafe assumption in a spec. Repeated preparation might justify a vetted script or an analysis-ready dataset. A procedure that repeatedly adds overhead may need to be simplified or retired.
 
-The cluster is being hardened to [CIS Controls v8.1 Implementation Group 1](https://www.cisecurity.org/controls), 56 safeguards covering asset inventory, secure configuration, audit logging, access control, backup verification, and incident response. Ethops agents are governed as AI systems under RadioAstronomy.io's NIST AI RMF-aligned governance framework, with lifecycle checkpoints, risk classification, and model cards for each persona. The operational implementation is documented in the [NIST AI RMF Cookbook](https://github.com/vintagedon/nist-ai-rmf-cookbook).
-
-This governance exists not because regulations require it, but because autonomous agents making infrastructure decisions that affect research data integrity carry a duty of care. RadioAstronomy.io voluntarily adopted Colorado SB-24-205's Duty of Care framework as the regulatory anchor for this responsibility.
-
-### Knowledge Base
-
-The ethops-kb is a version-controlled knowledge base structured for both human reading and programmatic agent retrieval. All agent-authored content passes through the same review gates as code. The human operator reviews and merges.
-
-![alt text](assets/kb-model-section-infographic.jpg)
-
-Documents are classified through a structured tagging schema: document type, technology domain, audience (agent/human/both), compliance framework, specific CIS control mapping, and references to CMDB configuration items. Agents retrieve content by querying tags, not by navigating directories. This is the institutional memory of the agent team: runbooks, asset sheets, incident postmortems, compliance evidence, architecture documentation, all version-controlled, all structured for both human reading and programmatic retrieval.
-
-### Action Accountability
-
-Every agent action is recorded in a tamper-evident log before execution. The log is designed so that retroactive modification or deletion of records is detectable.
-
-The log captures identity (which persona, which ephemeral instance), timing, action type (query, ticket update, playbook execution, PR submission, inference request), context (ticket reference, affected CIs, KB documents), outcome, and inference cost (model, tokens, latency).
-
-This serves three functions: operational visibility (what are the agents doing right now), debugging (what exactly happened when something went wrong), and compliance evidence (auditable action records with tamper detection supporting processing integrity requirements across multiple frameworks).
+The retained support can be small: a better instruction, a reproducible check, a documented decision, or a reliable handoff. There is no quota for creating new frameworks. Its value appears when later work is easier to understand, safer to execute, less costly to repeat, or useful to more people.
 
 ---
 
-## Repository Structure
+## 🧪 First Pilot: Daily Log Digest
 
+The candidate first pilot is a once-a-day digest of the environment's system journal. Its shape is simple: export the log, shape it into consistent structured data, enrich it with a model call and a named review skill, and render a report. Code supplies the counts, and the model's reasoning is labeled as its own.
+
+Each seam is replaceable. A cron job or a scheduler such as Semaphore can trigger it, JSON or XML can carry it, and the model can be local or hosted. What matters is that the data stays legible and consistent and that the model's contribution is clearly marked.
+
+The pilot is built one step at a time, because no one on the team has used this inference provider before. The first step is a probe: an Ansible playbook sends fixed log segments, raw and lightly cleaned, to three models on DeepInfra and records latency, token usage, and the responses. Don reads that evidence and answers six questions. Does the round trip work? Is latency acceptable? Which responses are useful? Does the skill need changes? Does the log need transforming? Does simple model routing work? Structured output and the report follow as separate steps, each scoped by what the previous one showed. At this stage a weak answer or a failed call is still useful evidence.
+
+---
+
+## 🏗 Architecture
+
+The architecture separates responsibilities so that tools can improve or be replaced without losing the work's meaning or authority.
+
+| Part | Working definition |
+|------|--------------------|
+| EthOps | The operating model: consumer relationships, service delivery, the work lifecycle, authority, review, and learning |
+| Astro | The capability layer the work draws on: explicit operations, evidence collection, validation, and model-assisted analysis. Its design is being restated, so this repository describes its role rather than its implementation |
+| The Forge | The working environment every project uses: runtimes, executors, data services, coordination tools, and durable records. The cluster supports it, projects consume it, and EthOps manages it |
+| Consumer projects | Their own goals, domain methods, artifacts, and acceptance criteria |
+
+Work survives in linked records rather than in any one session or tool:
+
+```mermaid
+erDiagram
+    accTitle: Work records and their relationships
+    accDescr: A work item may be scoped by specs and carried out through attempts. Each attempt runs in one or more sessions and may submit to a pull request. Decisions authorize, accept, or close work items and can dispose of pull requests.
+    WORK_ITEM ||--o{ SPEC : "scoped by"
+    WORK_ITEM ||--o{ ATTEMPT : "carried out through"
+    SPEC |o--o{ ATTEMPT : "governs"
+    ATTEMPT }|--|{ SESSION : "runs in"
+    ATTEMPT }|--o| PULL_REQUEST : "submits to"
+    WORK_ITEM ||--o{ DECISION : "authorized and closed by"
+    DECISION }o--o| PULL_REQUEST : "disposes of"
 ```
+
+*Proposed record relationships. Each record keeps its own identity, and the links carry the history. A small authorized correction may need no spec, one pull request can gather several attempts across sessions, and one work item can collect several decisions.*
+
+Agents receive context selected for the assignment, mechanical checks run before model review, and collected facts stay distinguishable from model interpretation. iTop is the intended service-management integration, and the triad must be able to resume from preserved records if any coordination tool disappears. The [charter](CHARTER.md) holds these commitments: authority in §6, the work lifecycle in §7, and durable state in §8.
+
+---
+
+## 📊 Project Status
+
+This revision separates demonstrated practice from capabilities still being developed or proposed.
+
+| Area | Status | Evidence or next step |
+|------|--------|-----------------------|
+| Steam data product | Published; continuing interest visible | Release, download snapshots, and announced TU Dortmund use described above |
+| ARD methodology | Developing from real projects | Public framework captures reusable methods emerging from Steam and subsequent work |
+| Spec-to-review engineering | Demonstrated operating practice | Scoped agent execution, checks, commits, PRs, and human-led review; no general reliability rate claimed |
+| EthOps charter and README | Draft; triad review applied | Adoption awaits Don's recorded decision |
+| Agent guidance | Aligned with the draft | `AGENTS.md` points agents at the charter; the earlier design is retained as history |
+| Daily log digest pilot | Step 1 specified; not yet run | Provider probe first; structured output and the report follow as separate steps |
+| Astro capabilities | Being restated | Role defined above; implementation evidence lives with Astro |
+| iTop-centered coordination and broader automation | Proposed integration | Validate through real service work before treating the complete workflow as available |
+
+The earlier [README](https://github.com/vintagedon/ethops/blob/59da2c52f25ad53280ab4ccb070c29003ea910ec/README.md) and [September charter draft](https://github.com/vintagedon/ethops/blob/e3331102add1ffa0ebb7983a643f9ae60d85e8c8/CHARTER.md) preserve the project's development. Their deployment claims, hardware assumptions, and component choices should be read in that historical context. This revision does not claim an integrated autonomous service organization is already deployed.
+
+---
+
+## 🧠 The Lab as a Skill Nexus
+
+The lab was conceived as a **skill nexus**: a place where useful projects develop connected capabilities. Each task has a "skill blast radius." Standing up PostgreSQL, for example, can involve scoping, architecture, security, VM sizing, schema design, testing, and ongoing operations. Carrying the work from intent through delivery, maintenance, and documentation develops judgment about how those choices affect one another.
+
+This is the cognitive-development thread beneath the practice. Scaffolding is inherent in doing and reviewing the work: experience develops personal judgment, while documented decisions, tested tools, and reusable methods preserve support in the environment. That cognitive offloading leaves more attention for unfamiliar problems and new learning. Fresh agents can use the retained support too. Better scaffolding improves practice, and practice reveals how to improve the scaffolding.
+
+---
+
+## 📁 Repository Structure
+
+```text
 ethops/
-├── assets/                       # Images, banners, infographics
-├── docs/                         # Public documentation
-│   ├── documentation-standards/  # Template library and guidelines
-│   └── data-science-infrastructure.md
-├── AGENTS.md                     # Agent conventions and constraints
-├── CODE_OF_CONDUCT.md
-├── CONTRIBUTING.md
-├── LICENSE                       # MIT (code)
-├── LICENSE-DATA                  # CC-BY-4.0 (data/content)
-├── SECURITY.md
-└── README.md
+├── CHARTER.md        # Operating commitments (draft)
+├── README.md         # Introduction, evidence, and project status
+├── AGENTS.md         # Agent guidance, aligned with the charter draft
+├── docs/             # Documentation standards and a historical infrastructure note
+├── assets/           # Logo and historical diagrams
+├── shared/           # Repository utilities
+├── work-logs/        # Retained project history
+├── LICENSE           # Code license (MIT)
+└── LICENSE-DATA      # Data and content license (CC-BY-4.0)
 ```
 
----
-
-## Design Decisions
-
-### Why iTop
-
-iTop's community edition includes full ITIL processes, a customizable CMDB with CI types for servers and VMs, REST API for programmatic ticket lifecycle, webhooks, automated dispatch rules with state machines, SLA calculation, and data synchronization collectors for Azure/AWS/Ansible. All free, self-hosted. The architecture depends on ITIL processes and a ticket system with these capabilities, not on iTop specifically. iTop was selected on economics and completeness.
-
-### Why Ephemeral Agents
-
-Persistent daemon agents accumulate state, consume resources continuously, and create failure modes that compound over time. Ephemeral agents spin up with clean context, do one job, update one ticket, and terminate. The orchestrator is the only persistent process, and it's a dispatcher, not an LLM. On constrained hardware (single GPU, shared between ops and research inference), this is the only model that doesn't create resource contention problems.
-
-### Why ITIL as the Coordination Model
-
-ITIL gives you incident/problem/change/request classification, SLA tracking, change control with approval workflows, and standard metrics (MTTD, MTTR, change success rate) as inherent properties of running work through tickets. These are not features to build. They're byproducts of the organizational model.
-
-### Why a Knowledge Graph for Infrastructure
-
-Flat CMDBs answer "what exists?" but not "what connects to what, across what layers?" When an agent needs to assess blast radius or trace root cause, a flat record requires it to infer dependencies, and that inference step is where hallucination risk increases. A layered graph (physical → network → virtualization → storage → service → application → external) lets agents traverse structural facts instead. The graph is the eighth interface contract.
+Private specifications and reference material are excluded from publication through the repository's ignore rules. The public repository explains the model and shares selected results and reusable material. Publishing an implementation detail or operational record requires a separate review of its suitability for release.
 
 ---
 
-## Scientific Workload Context
+## 🚀 Getting Started
 
-The cluster exists for astronomical survey data processing. Ethops serves this mission, not the other way around.
+Read the [charter](CHARTER.md) for the proposed scope, authority model, work lifecycle, and continuity requirements. Explore [Steam Dataset 2025](https://github.com/vintagedon/steam-dataset-2025) and [Analysis-Ready Datasets](https://github.com/vintagedon/analysis-ready-datasets) for the concrete example and the methodology it helped form.
 
-| Pipeline | Domain |
-|----------|--------|
-| Fink Broker | ZTF/LSST transient alert streams (~10M alerts/night expected) |
-| DESI Analysis | Spectroscopic data: void galaxies, QSO anomaly detection, quasar outflows |
-| SDSS Cross-matching | Multi-survey catalog correlation |
-| astronomy-rag-corpus | Federated knowledge core with semantic (pgvector) and topological (Neo4j) retrieval |
+To apply the approach, begin with one real consumer need. Define a bounded result and its acceptance evidence, use the tools already available, and carry it through execution and review. Retain what proves useful. The next investment should follow the friction, unmet need, or opportunity that work reveals.
 
-Three active DESI research projects drive the cluster's computational workload. The IT Ops team keeps the infrastructure running so the Research/Dev team can focus on producing analysis-ready datasets.
+For this project, the next step is the log digest probe. Its evidence decides the second step.
 
 ---
 
-## License
+## 📄 License
 
-- Code: [MIT License](LICENSE)
-- Data/Content: [CC-BY-4.0](LICENSE-DATA)
+- **Code**: [MIT License](LICENSE)
+- **Data/Content**: [CC-BY-4.0](LICENSE-DATA)
 
 ---
 
-## Acknowledgments
+<div align="center">
 
-- [iTop by Combodo](https://www.itophub.io/) — Open-source ITSM that makes the architecture possible
-- [Steven Vik](https://dev.to/svik) — Autonomous AI agents on Proxmox, prior art
-- [Nathan Broadbent](https://github.com/ndbroadbent) — Self-healing infrastructure with OpenClaw
+Part of the [donaldfountain.ai](https://donaldfountain.ai) network.
+
+</div>
+
+---
+
+Last Updated: 2026-10-23 · v0.4: triad review applied (pilot named, Astro and the Forge defined, record diagram, ITSM positioning)

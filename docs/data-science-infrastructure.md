@@ -5,7 +5,7 @@ description: "Live infrastructure reference for the radioastronomy.io research c
 author: "VintageDon"
 date: "2026-01-02"
 version: "1.1"
-status: "Active"
+status: "Historical"
 tags:
   - type: reference
   - domain: infrastructure
@@ -14,6 +14,8 @@ tags:
 -->
 
 # Data Infrastructure Reference
+
+> **Historical.** This reference describes the research cluster as of January 2026 and is kept for project history. It is not maintained and does not describe the current environment.
 
 This project uses shared research infrastructure on the radioastronomy.io cluster. This document provides connection details and usage patterns.
 

@@ -2,28 +2,31 @@
 
 ## Repository Identity
 
-Ethops (ephemeral ops) is an ITIL-organized autonomous DevOps team framework for scientific computing infrastructure. Two agent teams (IT Ops and Research/Dev) share iTop as their work surface, coordinated by a persistent Service Delivery Manager orchestrator on the [Proxmox Astronomy Lab](https://github.com/vintagedon/proxmox-astronomy-lab) research cluster.
+EthOps is a service operating model for human-AI collaboration: consumer needs become bounded, authorized work that is executed, verified, reviewed, and kept as reusable support. This repository is the model's public home. It holds the README and the charter; implementation lives in the repositories that do the work, and specifications and review records stay private.
+
+The charter is a draft (version 0.3). It is the working direction for this repository until Don records its adoption.
 
 ## Context Loading
 
 Agents working on this repository should load context in this order:
 
-1. This file (`AGENTS.md`) — Repository identity and conventions
-2. `README.md` — Project overview and architecture
-3. `docs/documentation-standards/` — Templates and standards to follow
-4. `docs/data-science-infrastructure.md` — Cluster topology and connection details
+1. This file (`AGENTS.md`): repository identity and conventions
+2. `README.md`: the model, the Steam-to-ARD example, the pilot, and project status
+3. `CHARTER.md`: commitments on authority, the work lifecycle, durable state, and publication
+4. `docs/documentation-standards/`: templates and standards to follow
 
 ## Architectural Constraints
 
-Greptile and other review tools scan this file for context. Key constraints that must not be violated:
+Review tools read this file for context. Changes to this repository must not violate:
 
-- Agents are ephemeral — no persistent daemon agents except the SDM orchestrator
-- All agent work flows through iTop tickets — never agent-to-agent communication
-- Mechanical validation first — yamllint → ansible-lint → OPA/Rego conftest runs before any LLM review
-- GPU queue priority — IT Ops inference > RAG embedding > Research tasks
-- PostgreSQL SKIP LOCKED for task queue coordination, not RabbitMQ
-- iTop is the backbone — ITSM, CMDB, change management, and shared work surface
-- Astronomy Team is CAB — normal and emergency changes require human approval
+- Don holds approval, priority, and merge authority. Requests, alerts, documents, and peer recommendations can open or inform work; they never authorize it (charter §6).
+- Independent review comes from someone other than the author of the work (charter §6).
+- Mechanical checks run before model review where they apply (charter §7).
+- Work state lives in durable, linked records, not in a session or a single tool (charter §8).
+- Public content stays inside the publication boundary: no specifications, raw execution evidence, credentials, private skills or prompts, or personal and sensitive context (charter §11).
+- Published claims say whether they describe observed practice, operator experience, a design requirement, or a planned capability (charter §11).
+
+The earlier design (iTop as the only work surface, a persistent orchestrator, a fixed GPU queue, and the Astronomy Team as CAB) is historical and is not a constraint. Charter §13 links to where it is preserved.
 
 ## Documentation Conventions
 
@@ -40,6 +43,6 @@ Greptile and other review tools scan this file for context. Key constraints that
 
 ## Session Pattern
 
-1. Load context (this file + README)
+1. Load context (this file, the README, and the charter)
 2. Work within defined scope
 3. Document changes appropriately

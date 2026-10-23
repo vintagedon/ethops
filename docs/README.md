@@ -14,7 +14,7 @@ tags:
 
 # Documentation
 
-Project documentation including templates, standards, and infrastructure reference materials.
+Project documentation: templates and standards, plus a historical infrastructure reference.
 
 ---
 
@@ -31,7 +31,7 @@ docs/
 │   ├── tagging-strategy.md
 │   ├── code-commenting-dual-audience.md
 │   └── README.md
-├── data-science-infrastructure.md  # Live infrastructure reference (example)
+├── data-science-infrastructure.md  # Historical infrastructure reference (January 2026)
 └── README.md                       # This file
 ```
 
@@ -49,7 +49,7 @@ docs/
 
 | Document | Description |
 |----------|-------------|
-| [data-science-infrastructure.md](data-science-infrastructure.md) | Live infrastructure reference — serves as working example of an infrastructure doc agents can use |
+| [data-science-infrastructure.md](data-science-infrastructure.md) | Historical infrastructure reference from January 2026, kept for project history and not maintained |
 
 ---
 
